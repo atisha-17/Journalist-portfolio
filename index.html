@@ -1,0 +1,804 @@
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="description" content="Welcome to NevedhyaPurohit.com - Personal blog and updates."> 
+    <meta name="author" content="Nevedhya Purohit"> 
+    <title>Welcome to NevedhyaPurohit.com</title>
+     <link rel="stylesheet" href="style.css"> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    
+</head>
+<body>
+    <div id="si-main">
+        <header class="head">
+            <div class="si-shapes"></div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="navbar">
+                <a href="index.html" class="n" target="_parent">होम</a>
+                <a href="about.html" class="n">मेरे बारे में</a>
+                <div class="dropdown">
+                    <a href="#" class="n">प्रकाशित लेख ▾</a>
+                    <div class="dropdown-content">
+                        <a href="TimesOfIndore.html">टाइम्स ऑफ इन्दौर
+                        </a>
+                        <a href="PaliwalSakhi.html">पालीवाल सखी
+                        </a>
+                        <a href="BennettTimes.html">बेनेट टाइम्स
+                        </a>
+                    </div>
+                </div>
+                <a href="contact.html" class="n">संपर्क करें
+                </a>
+
+            </nav>
+            <div class="social">
+                <a href="https://www.facebook.com/share/15CSgY4Lne/" target="_blank">
+                    <img src="image/facebook.jpg" width="40px">
+                </a>
+                <a href="https://x.com/NevedhyaPurohit?t=rcYjGIDOzuRGk5DMLj3cAg&s=08" target="_blank">
+                    <img src="image/twitter.png" width="40px">
+                </a>
+                <a href="https://nevsomepecial.blogspot.com" target="_blank">
+                    <img src="image/blogger-icon.jpg" width="40px">
+                </a>
+                <a href="https://www.linkedin.com/in/nevedhaya-purohit-164547271?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+                    <img src="image/linkedin.png" width="40px">
+                </a>
+                <a href="https://www.instagram.com/purohit_nev?igsh=MXR5Zm14dWx2cXdrMw==" target="_blank">
+                    <img src="image/instagram.png" width="40px">
+                </a>
+            </div> 
+        </header>
+        <h1 class="h1">मेरे चुनिंदा ब्लॉग
+        </h1>
+        <div id="loading">Loading blogs...</div>
+        <section class="blog-grid" id="blogContainer">
+    
+        </section>
+    </div>
+    
+    <div class="blogspot">
+        <h2>अधिक ब्लॉग के लिए यहां क्लिक करें
+            <a href="https://nevsomepecial.blogspot.com" target="_blank">NevSomepecial.Blogspot.com</a></h2>
+    </div>
+    <script>
+    $(document).ready(function() {
+     $(".menu-toggle").click(function() {
+            $(this).toggleClass("active");
+            $(".navbar").toggleClass("active");
+        });
+
+        // Close menu when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest('.menu-toggle, .navbar').length) {
+                $(".menu-toggle").removeClass("active");
+                $(".navbar").removeClass("active");
+            }
+        });
+
+        // Dropdown click for mobile
+        if ($(window).width() <= 599) {
+            $(".dropdown > a").click(function(e) {
+                e.preventDefault();
+                $(this).siblings(".dropdown-content").slideToggle();
+            });
+        }
+
+        
+
+
+
+    $(".navbar a.n").on("click", function(e) {
+                // Only if the href has a value
+                if ($(this).attr("href") && $(this).attr("href") !== "#") {
+                    window.location.href = $(this).attr("href");
+                }
+            });
+            
+        // Fetch all posts from the Blogspot RSS feed
+        fetchBlogPosts();
+    });
+    
+    function fetchBlogPosts() {
+        // Using the exact URL you provided
+        const blogspotFeedUrl = 'https://nevsomepecial.blogspot.com/feeds/posts/default';
+        
+        // Using rss2json API to convert Blogspot's feed to JSON and bypass CORS issues
+        const feedApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(blogspotFeedUrl)}&count=50&api_key=vs7rl1dupdoilywkaty9tzdmhd4vab1ds9iddpqw`;
+        
+        // Fetch the feed
+        $.getJSON(feedApiUrl, function(data) {
+            // Hide the loading indicator
+            $('#loading').hide();
+            
+            if (data.status === 'ok') {
+                const items = data.items;
+                
+                // Sort posts by date, newest first
+                items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                
+                if (items.length === 0) {
+                    $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">No blog posts found. Please check the blog URL.</div>');
+                    return;
+                }
+                
+                // Process each blog post
+                items.forEach(post => {
+                    // Extract the first image or use a default
+                    let imgSrc = 'image/default-blog.jpg'; // Default image
+                    const imgMatch = /<img.*?src=['"](.*?)['"]/i.exec(post.content);
+                    if (imgMatch && imgMatch[1]) {
+                        imgSrc = imgMatch[1];
+                    }
+                    
+                    // Format the date to match your existing style
+                    const pubDate = new Date(post.pubDate);
+                    const months = ["January", "February", "March", "April", "May", "June", 
+                                    "July", "August", "September", "October", "November", "December"];
+                    const formattedDate = `${months[pubDate.getMonth()]} ${String(pubDate.getDate()).padStart(2, '0')}, ${pubDate.getFullYear()}`;
+                    
+                    // Add the blog card
+                    addBlogCard(post.link, imgSrc, formattedDate, post.title);
+                });
+            } else {
+                // Show error message if feed couldn't be loaded
+                $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">Failed to load blogs. Please try again later.</div>');
+                console.error('Error fetching Blogspot feed:', data.message);
+            }
+        }).fail(function(error) {
+            // Handle network errors
+            $('#loading').hide();
+            $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">Failed to load blogs. Please check your internet connection.</div>');
+            console.error('Failed to load Blogspot feed:', error);
+        });
+    }
+    
+    
+
+let cardIndex = 0;
+function addBlogCard(link, imgSrc, date, title) {
+    const delay = cardIndex * 500; // 100ms delay between cards
+    const blogCard = $(`
+        <div class="blog-card-wrapper">
+            <div class="blog-card">
+                <a href="${link}" target="_blank">
+                    <img src="${imgSrc}" alt="${title}" onerror="this.src='image/default-blog.jpg';">
+                    <p>${date}</p>
+                    <h3><b>${title}</b></h3>
+                </a>
+            </div>
+        </div>
+    `);
+
+    $('#blogContainer').append(blogCard);
+    cardIndex++;
+}
+
+
+</script>
+</body>
+</html> -->
+ 
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="description" content="Welcome to NevedhyaPurohit.com - Personal blog and updates."> 
+    <meta name="author" content="Nevedhya Purohit"> 
+    <title>Welcome to NevedhyaPurohit.com</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url(image/b2.png);
+            background-position: relative;
+            background-size: cover;
+            background-repeat: no-repeat;
+            font-family: Arial, sans-serif;
+        }
+
+        #si-main {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        .head {
+            border-radius: 5px;
+            margin: 10px auto 0;
+            height: 300px;
+            background-image: url(image/header.png);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            width: 100%;
+            z-index: 1; 
+            opacity: 0;
+            transform: translateY(20px);
+            animation: pop 0.6s ease-out forwards;
+        }
+
+        @keyframes pop {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .si-shapes {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 5px;
+            margin-right: 20px;
+        }
+
+        .navbar a {
+            background-color: #c18f72;
+            padding: 5px 12px;
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: center;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #b2765b;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+           margin-top: 5px;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f2d5c8;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 99;
+            /* border-radius: 8px; */
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 8px 12px;
+            text-decoration: none;
+            display: block;
+            font-weight: normal;
+            border-radius: 0;
+            box-shadow: none;
+            margin: 0;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #e2b59b;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 17px;
+            cursor: pointer;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #333;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+
+        /* Social Media Icons */
+        .social {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            display: flex;
+            gap: 10px;
+            margin-right: 20px;
+        }
+
+        .social img {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .social img:hover {
+            transform: scale(1.1);
+        }
+
+        /* Heading Styles */
+        .h1 {
+            text-align: center;
+            margin: 30px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: p 0.6s ease-in forwards;
+            font-size: 2rem;
+        }
+
+        @keyframes p {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Blog Grid Styles */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(250px, 1fr));
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            gap: 20px;
+        }
+
+        .blog-card-wrapper {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: popIn 0.6s ease-out forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .blog-card {
+            background: #ffffff54;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            height: auto;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-card img {
+            display: block;
+            object-fit: cover;
+            width: 350px;
+            margin: 0 auto;
+        
+            height: 300px;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .blog-card h3 {
+            padding: 15px;
+            font-size: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .blog-card p {
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 0 15px 15px;
+        }
+
+        .blog-card a {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        #loading {
+            text-align: center;
+            padding: 20px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .blogspot {
+            text-align: center;
+            background-color: #983406;
+            padding: 15px;
+            color: white;
+        }
+
+        .blogspot h2 {
+            font-size: 1.2rem;
+            margin: 0;
+        }
+
+        .blogspot a {
+            text-decoration: none;
+            color: #e2b59b;
+            font-weight: bold;
+        }
+
+        /* Tablet Responsive Styles (768px to 1024px) */
+        @media (max-width: 1024px) {
+            .head {
+                height: 250px;
+            }
+            
+            .blog-grid {
+                padding: 15px;
+            }
+            
+            .social {
+                margin-right: 15px;
+            }
+            
+            .h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Small Tablet Responsive Styles (600px to 767px) */
+        @media (max-width: 767px) {
+            .head {
+                height: 200px;
+            }
+            
+            .navbar {
+                margin-top: 15px;
+                gap: 8px;
+            }
+            
+            .navbar a {
+                padding: 4px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .social img {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .h1 {
+                font-size: 1.6rem;
+                margin: 25px 0;
+            }
+            
+            .blog-card h3 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Mobile Responsive Styles (max-width: 599px) */
+        @media (max-width: 599px) {
+            .head {
+                height: 150px;
+                margin-top: 5px;
+            }
+            
+            .navbar {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                background-color: #f2d5c8;
+                width: 80%;
+                max-width: 300px;
+                height: 230px;
+                z-index: 999;
+                padding: 60px 20px 20px;
+                gap: 15px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                overflow-y: auto;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .navbar.active {
+                display: flex;
+                transform: translateX(0);
+            }
+            
+            .navbar a {
+                width: 100%;
+                text-align: left;
+                padding: 10px;
+            }
+            
+            .dropdown {
+                width: 80%;
+                max-width: 300px;
+                
+            }
+            
+            .dropdown-content {
+                position: relative;
+                width: 80%;
+                box-shadow: none;
+                margin-top: 5px;
+            }
+            
+            .menu-toggle {
+                display: flex;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .social {
+                bottom: 5px;
+                right: 5px;
+                gap: 5px;
+                margin-right: 5px;
+            }
+            
+            .social img {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .h1 {
+                font-size: 1.4rem;
+                margin: 20px 0;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 15px;
+            }
+            
+            .blog-card {
+                max-width: 350px;
+                margin: 0 auto;
+            }
+            
+            .blog-card img {
+                height: 180px;
+            }
+            
+            .blogspot h2 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="si-main">
+        <header class="head">
+            <div class="si-shapes"></div>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <nav class="navbar">
+                <a href="index.html" class="n" target="_parent">होम</a>
+                <a href="about.html" class="n">मेरे बारे में</a>
+                <div class="dropdown">
+                    <a href="#" class="n">प्रकाशित लेख ▾</a>
+                    <div class="dropdown-content">
+                        <a href="TimesOfIndore.html">टाइम्स ऑफ इन्दौर</a>
+                        <a href="PaliwalSakhi.html">पालीवाल सखी</a>
+                        <a href="OtherPublications.html">अन्य प्रकाशन</a>
+                    </div>
+                </div>
+                <a href="contact.html" class="n">संपर्क करें</a>
+            </nav>
+            <div class="social">
+                <a href="https://www.facebook.com/share/15CSgY4Lne/" target="_blank">
+                    <img src="image/facebook.jpg" alt="Facebook">
+                </a>
+                <a href="https://x.com/NevedhyaPurohit?t=rcYjGIDOzuRGk5DMLj3cAg&s=08" target="_blank">
+                    <img src="image/twitter.png" alt="Twitter">
+                </a>
+                <a href="https://nevsomepecial.blogspot.com" target="_blank">
+                    <img src="image/blogger-icon.jpg" alt="Blogger">
+                </a>
+                <a href="https://www.linkedin.com/in/nevedhaya-purohit-164547271?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+                    <img src="image/linkedin.png" alt="LinkedIn">
+                </a>
+                <a href="https://www.instagram.com/purohit_nev?igsh=MXR5Zm14dWx2cXdrMw==" target="_blank">
+                    <img src="image/instagram.png" alt="Instagram">
+                </a>
+            </div> 
+        </header>
+        <h1 class="h1">मेरे चुनिंदा ब्लॉग</h1>
+        <div id="loading">Loading blogs...</div>
+        <section class="blog-grid" id="blogContainer"></section>
+    </div>
+    
+    <div class="blogspot">
+        <h2>अधिक ब्लॉग के लिए यहां क्लिक करें
+            <a href="https://nevsomepecial.blogspot.com" target="_blank">NevSomepecial.Blogspot.com</a>
+        </h2>
+    </div>
+    <script>
+    $(document).ready(function() {
+        // Toggle menu for mobile
+        $(".menu-toggle").click(function() {
+            $(this).toggleClass("active");
+            $(".navbar").toggleClass("active");
+        });
+
+        // Close menu when clicking outside
+        $(document).click(function(event) {
+            if (!$(event.target).closest('.menu-toggle, .navbar').length) {
+                $(".menu-toggle").removeClass("active");
+                $(".navbar").removeClass("active");
+            }
+        });
+
+        // Dropdown click for mobile
+        if ($(window).width() <= 599) {
+            $(".dropdown > a").click(function(e) {
+                e.preventDefault();
+                $(this).siblings(".dropdown-content").slideToggle();
+            });
+        }
+
+        // Navigation link click
+        $(".navbar a.n").on("click", function(e) {
+            // Only if the href has a value
+            if ($(this).attr("href") && $(this).attr("href") !== "#") {
+                window.location.href = $(this).attr("href");
+            }
+        });
+        
+        // Fetch all posts from the Blogspot RSS feed
+        fetchBlogPosts();
+    });
+    
+    function fetchBlogPosts() {
+        // Using the exact URL you provided
+        const blogspotFeedUrl = 'https://nevsomepecial.blogspot.com/feeds/posts/default';
+        
+        // Using rss2json API to convert Blogspot's feed to JSON and bypass CORS issues
+        const feedApiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(blogspotFeedUrl)}&count=50&api_key=vs7rl1dupdoilywkaty9tzdmhd4vab1ds9iddpqw`;
+        
+        // Fetch the feed
+        $.getJSON(feedApiUrl, function(data) {
+            // Hide the loading indicator
+            $('#loading').hide();
+            
+            if (data.status === 'ok') {
+                const items = data.items;
+                
+                // Sort posts by date, newest first
+                items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                
+                if (items.length === 0) {
+                    $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">No blog posts found. Please check the blog URL.</div>');
+                    return;
+                }
+                
+                // Process each blog post
+                items.forEach(post => {
+                    // Extract the first image or use a default
+                    let imgSrc = 'image/default-blog.jpg'; // Default image
+                    const imgMatch = /<img.*?src=['"](.*?)['"]/i.exec(post.content);
+                    if (imgMatch && imgMatch[1]) {
+                        imgSrc = imgMatch[1];
+                    }
+                    
+                    // Format the date to match your existing style
+                    const pubDate = new Date(post.pubDate);
+                    const months = ["January", "February", "March", "April", "May", "June", 
+                                    "July", "August", "September", "October", "November", "December"];
+                    const formattedDate = `${months[pubDate.getMonth()]} ${String(pubDate.getDate()).padStart(2, '0')}, ${pubDate.getFullYear()}`;
+                    
+                    // Add the blog card
+                    addBlogCard(post.link, imgSrc, formattedDate, post.title);
+                });
+            } else {
+                // Show error message if feed couldn't be loaded
+                $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">Failed to load blogs. Please try again later.</div>');
+                console.error('Error fetching Blogspot feed:', data.message);
+            }
+        }).fail(function(error) {
+            // Handle network errors
+            $('#loading').hide();
+            $('#blogContainer').html('<div style="text-align:center; grid-column: 1 / -1;">Failed to load blogs. Please check your internet connection.</div>');
+            console.error('Failed to load Blogspot feed:', error);
+        });
+    }
+    
+    let cardIndex = 0;
+    function addBlogCard(link, imgSrc, date, title) {
+        const delay = cardIndex * 200; // Reduced delay between cards
+        const blogCard = $(`
+            <div class="blog-card-wrapper" style="animation-delay: ${delay}ms;">
+                <div class="blog-card">
+                    <a href="${link}" target="_blank">
+                        <img src="${imgSrc}" alt="${title}" onerror="this.src='image/default-blog.jpg';">
+                        <p>${date}</p>
+                        <h3><b>${title}</b></h3>
+                    </a>
+                </div>
+            </div>
+        `);
+
+        $('#blogContainer').append(blogCard);
+        cardIndex++;
+    }
+    </script>
+</body>
+</html>

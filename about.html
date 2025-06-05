@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Welcome to NevedhyaPurohit.com - Personal blog and updates.">
+    <meta name="author" content="Nevedhya Purohit">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>मेरे बारे में</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url("image/aboutbg.png");
+            /* background-repeat: no-repeat; */
+            background-size: cover;
+            background-position: center;
+            /* background-attachment: fixed; Optional: makes background stay in place while scrolling */
+            overflow:scroll;
+            
+        }
+        .navbar {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background: #d6cac428;
+
+  
+  padding: 5px;
+        }
+
+.navbar a {
+  
+  padding: 5px 12px;
+font-size: medium;
+  text-decoration: none;
+  color: rgb(255, 254, 254);
+  font-weight: bold;
+  
+ 
+  /* min-width: 50px; */
+  text-align: center;
+}
+.navbar a:hover {
+  background-color: #90776ca9;
+  
+}
+
+
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  margin-top: 5px;
+
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #9d7968;
+  /* min-width: 120px; */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  /* z-index: 99; */
+  /* top: 100%; */
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 5px 12px;
+  text-decoration: none;
+  display: block;
+  font-weight: normal;
+}
+
+.dropdown-content a:hover {
+  background-color: #948881;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.container{
+    display: flex;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: popIn 0.6s ease-in forwards;
+    padding: 10px 0px;
+    height: 600px;
+}
+.heading{
+  text-align: center;
+  color: white;
+  font-size: 3rem;
+  
+}
+
+.scroll-container{
+ overflow: hidden;
+ width: 100%;
+ padding: 15px 0px;
+}
+
+.scroll-content {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 20s linear infinite;
+  gap: 20px; /* spacing between images */
+}
+
+.certificate {
+  height: 200px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.certificate:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+@keyframes popIn {
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+}
+        
+        .main img{
+            margin:70px;
+        }
+        .content{
+            margin-top: 70px;
+            color: white;
+        }
+        
+        .content h1{
+            font-size: 3rem;
+        }
+        .content p{
+            font-size: large;
+            margin-right: 70px;
+            word-spacing: 3px;
+            font-family: hindi 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        .internships{
+          width: 100%;
+          padding: 20px 0px;
+          margin: 30px 0px;
+        }
+        .intern{
+  text-align: center;
+  color: white;
+  font-size: 3rem;
+  
+}
+
+.timeline {
+  position: relative;
+  margin: 50px auto;
+  padding-left: 50px;
+  padding-top: 20px;
+  width: 80%;
+  border-left: 1.5px solid #ccc;
+  
+}
+
+.timeline-line {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #e0e0e0;
+}
+
+.timeline-progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  background: rgb(203, 65, 2);
+  height: 0;
+  transition: height 0.2s ease-out;
+}
+
+.timeline-item {
+  margin-bottom: 60px;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+ 
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -11px;
+  top: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: #e49764;
+  border: 4px solid #e65d07;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.timeline-item img {
+  width: 200px;
+  
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+.timeline-item .content1 {
+  padding: 10px; 
+  color: white;
+  /* border-radius: 8px; */
+  font-size: large;
+  word-spacing: 3px;
+ font-family: hindi 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    <header class="head">
+    <nav class="navbar">
+        <a href="index.html">होम</a>
+        <a href="about.html">मेरे बारे में</a>
+        <div class="dropdown">
+            <a href="#" class="n">प्रकाशित लेख
+                ▾</a>
+            <div class="dropdown-content">
+                <a href="TimesOfIndore.html">टाइम्स ऑफ इन्दौर
+                </a>
+                <a href="PaliwalSakhi.html">पालीवाल सखी
+                </a>
+                <a href="OtherPublications.html">अन्य प्रकाशन
+                </a>
+            </div>
+        </div>
+        <a href="contact.html" class="n">संपर्क करें
+        </a>
+    </nav>
+    </header>
+    <div class="container">
+    <div class="main">
+    <img src="image\nev.jpg" width="400px" height="500px">
+   
+    </div>
+    <div class="content">
+        <h1>नैवेद्य पुरोहित</h1>
+        <p>एक युवा पत्रकार, लेखक और वॉयस-ओवर आर्टिस्ट हैं। जिनका जन्म पत्रकारिता का तीर्थ कहे जाने वाले शहर इंदौर में पत्रकारिता से ही जुड़े पालीवाल ब्राह्मण परिवार में 11 दिसम्बर 2004 को हुआ था। मीडिया और राजनीति के प्रति कम उम्र से ही आकर्षण रहा है। साप्ताहिक समाचार पत्र टाइम्स ऑफ़ इंदौर और मासिक पत्रिका पालीवाल सखी के लिए सिटी रिपोर्टर के रूप पिछले 5 सालों से काम कर रहे हैं। जहाँ उन्होंने ग्राउंड रिपोर्टिंग और लेखन में व्यावहारिक अनुभव प्राप्त किया है। इसके अतिरिक्त नोएडा में टाइम्स नेटवर्क में न्यूज लाइब्रेरी विभाग में इंटर्नशिप की और वर्तमान में दिल्ली विधानसभा में माननीय विधायक श्री गोपाल राय के कार्यालय में पॉलिसी, रिसर्च, आउटरीच और मीडिया इंटर्न के तौर पर कार्य करते हैं।
+            <br>
+            <br>
+            नैवेद्य बेनेट यूनिवर्सिटी में हिंदी पत्रकारिता एवं जनसंचार (बीएजेएमसी ऑनर्स - हिंदी) के फाइनल ईयर के छात्र है। जहाँ वे यूनिवर्सिटी की एनएसएस (राष्ट्रीय सेवा योजना) इकाई के उपाध्यक्ष के पद पर भी हैं। उनके कौशल में कंटेंट राइटिंग, न्यूज़लेटर एडिटिंग, रिसर्च और वॉयस-ओवर कार्य शामिल हैं। उनकी प्रमुख रुचि लेखन, पढ़ना, यात्रा करना, फ़िल्में देखना, सार्वजनिक भाषण देना और सामाजिक मुद्दों पर शोध करना है। अपने मज़बूत संचार कौशल और विश्लेषणात्मक सोच के लिए जाने जाने वाले, वे अपनी पत्रकारिता में रचनात्मकता और विश्लेषणात्मक दृष्टिकोण को भी संतुलित करते हैं। अपने परिवार की विरासत में परदादाजी स्वर्गीय गणेशचन्द्र पुरोहित, पालीवाल ब्राह्मण समाज इंदौर के प्रथम पत्रकार के बताए गए सद्कार्यों पर चलकर पत्रकारिता की परंपरा को यह चौथी पीढ़ी आगे बढ़ा रही हैं।
+
+            
+        </p>
+    </div>
+    </div>
+    
+    <div class="scroll-container">
+      <h1 class="heading">मेरे प्रमाणन</h1>
+      <div class="scroll-content">
+        <img src="image\nevcerti1.jpg" class="certificate" alt="yes+ certificate">
+        <img src="image/nevcert2.jpg" class="certificate" alt="Emory University">
+        <img src="image/nevcert3.jpg" class="certificate" alt="Vanderbilt University">
+        <img src="image/nevcert4.jpg" class="certificate" alt="University of Pennsylvania">
+        <img src="image/nevcert5.jpg" class="certificate" alt="Times School Of Media">
+        <img src="image/nevcert6.jpg" class="certificate" alt="IIIT Nagpur">
+        <img src="image/nevcert7.jpg" class="certificate" alt="Reinventing Higher Education">
+        <img src="image/nevcert8.jpg" class="certificate" alt="University Of Airlanga">
+        <img src="image/nevcert9.jpg" class="certificate" alt="University Of Airlanga">
+        <img src="image/nevcert10.jpg" class="certificate" alt="University Of Michigan">
+        <img src="image/nevcert11.jpg" class="certificate" alt="HootSuit Academy">
+        
+      </div>
+    </div>
+    <div class="internships">
+      <h1 class="intern">इंटर्नशिप</h1>
+      <div class="timeline">
+  <div class="timeline-line"></div>
+  <div class="timeline-progress"></div>
+
+      <div class="timeline-item">
+        <img src="image/times.jpg" alt="Times Network Internship" />
+        <div class="content1">
+          <h3>इंटर्नशिप अनुभव – टाइम्स नेटवर्क (न्यूज़ लाइब्रेरी)</h3>
+          <p>
+
+मैंने टाइम्स नेटवर्क में इंटर्नशिप के दौरान न्यूज़ लाइब्रेरी विभाग में कार्य किया, जहाँ मुझे विभिन्न महत्वपूर्ण कार्यों की जिम्मेदारी सौंपी गई। इस इंटर्नशिप के माध्यम से मुझे मीडिया और समाचार प्रबंधन की गहराई से समझ प्राप्त हुई। मेरे प्रमुख कार्यों में शामिल थे:<br>
+
+मेटा टैगिंग (Meta Tagging): समाचार वीडियो और कंटेंट को उपयुक्त टैग्स के माध्यम से वर्गीकृत करना, जिससे उन्हें सर्च और व्यवस्थित करना आसान हो सके।<br>
+
+डेटा संग्रहण और प्रबंधन (Data Archiving & Management): पुराने समाचार फुटेज और दस्तावेज़ों को सुव्यवस्थित तरीके से संग्रहित करना और डिजिटल डेटाबेस में उनका प्रबंधन करना।<br>
+
+एलटीओ स्टोरेज (LTO Storage): दीर्घकालीन संग्रहण के लिए एलटीओ (Linear Tape-Open) तकनीक का उपयोग करके डेटा को सुरक्षित रूप से स्टोर करना।<br><br>
+
+इस इंटर्नशिप ने मुझे मीडिया कंटेंट हैंडलिंग, डिजिटल आर्काइविंग और तकनीकी दक्षताओं का व्यावहारिक अनुभव प्रदान किया। साथ ही, मैंने टीम वर्क, अनुशासन और समय प्रबंधन जैसे महत्वपूर्ण व्यावसायिक कौशल भी सीखे।</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <img src="image/ehsaas.jpg" alt="Ehsaas Internship" />
+        <div class="content1">
+          <h3>एहसास महिला समिति</h3>
+          <p>
+
+मैंने "एहसास महिला समिति" में इंटर्न के रूप में कार्य करते हुए सामाजिक सेवा और जागरूकता अभियानों से जुड़े विभिन्न कार्यों का अनुभव प्राप्त किया। इस दौरान मुझे निम्नलिखित ज़िम्मेदारियाँ सौंपी गईं:<br>
+
+सोशल मीडिया प्रबंधन और समन्वय: संस्था की गतिविधियों को डिजिटल प्लेटफ़ॉर्म पर प्रस्तुत करना, नियमित पोस्टिंग करना, सामग्री तैयार करना और ऑनलाइन उपस्थिति को सुदृढ़ बनाना।<br>
+
+कार्यक्रमों की योजना और समन्वय: विभिन्न सामाजिक जागरूकता कार्यक्रमों और आयोजनों की योजना बनाना, उन्हें व्यवस्थित करना, और सभी संबंधित पक्षों के बीच समन्वय स्थापित करना।<br>
+
+इस अनुभव ने मुझे सामाजिक संगठनों की कार्यशैली, डिजिटल कम्युनिकेशन, और कार्यक्रम प्रबंधन की वास्तविक समझ प्रदान की। साथ ही, मैंने टीमवर्क, रचनात्मकता और नेतृत्व जैसे महत्वपूर्ण कौशल भी विकसित किए।</p>
+        </div>
+      </div>
+    </div>
+
+    </div>
+</body>
+<script>
+  window.addEventListener('scroll', () => {
+    const timeline = document.querySelector('.timeline');
+    const progress = document.querySelector('.timeline-progress');
+    const rect = timeline.getBoundingClientRect();
+    const windowHeight = window.innerHeight;
+
+    // Get how much of the timeline is visible
+    const visible = Math.min(windowHeight - rect.top, rect.height);
+    const progressHeight = Math.max(0, visible);
+
+    // Set height of the progress line
+    progress.style.height = progressHeight + 'px';
+  });
+</script>
+
+</html>
